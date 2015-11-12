@@ -83,16 +83,17 @@ public class mensajes extends AppCompatActivity implements LocationListener{
     protected void onResume() {
         super.onResume();
         if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
-
+            ubicacion.requestLocationUpdates(provider, 400, 1, this);
         }
-        ubicacion.requestLocationUpdates(provider, 400, 1, this);
+
     }
     protected void onPause() {
         super.onPause();
         if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
 
+            ubicacion.removeUpdates(this);
         }
-        ubicacion.removeUpdates(this);
+
     }
     @Override
     public void onLocationChanged(Location location) {
@@ -119,6 +120,7 @@ public class mensajes extends AppCompatActivity implements LocationListener{
     public void mensajecontacto(View view){
         Toast contacto = Toast.makeText(this,"Se enviará tu ubicación cada 5 minutos", Toast.LENGTH_LONG);
         contacto.show();
+        btnFisico();
         Intent mnscontacto = new Intent(this, MainActivity.class);
         startActivity(mnscontacto);
     }
@@ -217,18 +219,20 @@ public class mensajes extends AppCompatActivity implements LocationListener{
         Criteria criteria=new Criteria();
         String proveedor=ubicacion.getBestProvider(criteria,true);
         provider=ubicacion.getBestProvider(criteria,true);
+        String latitud="";
+        String longitud="";
 
 
         if ( ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
 
-
+            ubicacion.requestLocationUpdates(provider, 400, 1, this);
+            Location posActual=ubicacion.getLastKnownLocation(proveedor);
+            latitud=""+posActual.getLatitude();
+            longitud=""+posActual.getLongitude();
 
 
         }
-        ubicacion.requestLocationUpdates(provider, 400, 1, this);
-        Location posActual=ubicacion.getLastKnownLocation(proveedor);
-        String latitud=""+posActual.getLatitude();
-        String longitud=""+posActual.getLongitude();
+
 
 
 
@@ -253,17 +257,24 @@ public class mensajes extends AppCompatActivity implements LocationListener{
     }
 
     public void btnGetUbicacion(View view) {
-
+        String latitud;
+        String longitud;
         ubicacion= (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria=new Criteria();
         String proveedor=ubicacion.getBestProvider(criteria,true);
         if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
 
-        }
-        Location posActual=ubicacion.getLastKnownLocation(proveedor);
-        String latitud=""+posActual.getLatitude();
-        String longitud=""+posActual.getLongitude();
 
+        Location posActual=ubicacion.getLastKnownLocation(proveedor);
+        latitud=""+posActual.getLatitude();
+        longitud=""+posActual.getLongitude();
+        }
+        else {
+            latitud="";
+            longitud="";
+
+
+        }
 
 
 
@@ -273,7 +284,25 @@ public class mensajes extends AppCompatActivity implements LocationListener{
                         latitud+","+
                         longitud+"&sensor=false");
     }
+    public void btnFisico() {
 
+        ubicacion= (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria=new Criteria();
+        String proveedor=ubicacion.getBestProvider(criteria,true);
+        if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
+
+
+            Location posActual = ubicacion.getLastKnownLocation(proveedor);
+            String latitud = "" + posActual.getLatitude();
+            String longitud = "" + posActual.getLongitude();
+
+
+            new ReadLocationJSONFeedTask().execute(
+                    "http://maps.googleapis.com/maps/api/geocode/json?latlng=" +
+                            latitud + "," +
+                            longitud + "&sensor=false");
+        }
+    }
 
 }
 
