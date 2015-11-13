@@ -3,6 +3,8 @@ package taxiapp.upslp.wap.taxiapp;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.provider.ContactsContract;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -51,6 +53,7 @@ public class mensajes extends AppCompatActivity implements LocationListener{
     private EditText telefono;
     Button panico;
     String provider;
+    static final int PICK_CONTACT=1;
 
     public String readJSONFeed(String URL) {
         StringBuilder stringBuilder = new StringBuilder();
@@ -80,16 +83,96 @@ public class mensajes extends AppCompatActivity implements LocationListener{
     }
 
 
+    public void getContacto(View view){
+        final int PICK_CONTACT=1;
+        try
+        {
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
+            startActivityForResult(intent, PICK_CONTACT);
+        }
+        catch (Exception e) {
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
+        }
+
+    }
+
+
+
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent)
+    {
+        try
+        {
+
+
+            if (requestCode == PICK_CONTACT)
+            {
+                Cursor cursor =  managedQuery(intent.getData(), null, null, null, null);
+                cursor.moveToNext();
+                String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+                String  name = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
+                String phone=cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.HAS_PHONE_NUMBER));
+                String phoneNumber="test";
+
+                if ( phone.equalsIgnoreCase("1"))
+                    phone = "true";
+                else
+                    phone = "false" ;
+
+                if (Boolean.parseBoolean(phone))
+                {
+                    Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = "+ contactId,null, null);
+                    while (phones.moveToNext())
+                    {
+                        phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                    }
+                    phones.close();
+                }
+                Toast.makeText(this, "You are selected Contact name "+name, Toast.LENGTH_LONG).show();
+                if(telefono.getText().length()!=0)
+                {
+                    telefono.setText(telefono.getText().toString()+","+phoneNumber);
+                }
+                else
+                {
+                    telefono.setText(phoneNumber);
+                }
+
+            }
+        }
+        catch (Exception e) {
+            // TODO: handle exception
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     protected void onResume() {
         super.onResume();
-        if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
+        if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) == PackageManager.PERMISSION_GRANTED ) {
             ubicacion.requestLocationUpdates(provider, 400, 1, this);
         }
 
     }
     protected void onPause() {
         super.onPause();
-        if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
+        if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) == PackageManager.PERMISSION_GRANTED ) {
 
             ubicacion.removeUpdates(this);
         }
@@ -118,11 +201,11 @@ public class mensajes extends AppCompatActivity implements LocationListener{
 
 
     public void mensajecontacto(View view){
-        Toast contacto = Toast.makeText(this,"Se enviará tu ubicación cada 5 minutos", Toast.LENGTH_LONG);
-        contacto.show();
+        //Toast contacto = Toast.makeText(this,"Se enviará tu ubicación cada 5 minutos", Toast.LENGTH_LONG);
+        //contacto.show();
         btnFisico();
-        Intent mnscontacto = new Intent(this, MainActivity.class);
-        startActivity(mnscontacto);
+        //Intent mnscontacto = new Intent(this, MainActivity.class);
+        //startActivity(mnscontacto);
     }
 
     public void volvercontacto(View view){
@@ -132,20 +215,7 @@ public class mensajes extends AppCompatActivity implements LocationListener{
 
 
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
     private class ReadLocationJSONFeedTask extends AsyncTask<String, Void, String> {
         protected String doInBackground(String... urls) {
             return readJSONFeed(urls[0]);
@@ -159,6 +229,7 @@ public class mensajes extends AppCompatActivity implements LocationListener{
                 direccion=remove1(direccion);
 
                 Toast.makeText(getBaseContext(),"Direccion Actual: "+direccion  ,Toast.LENGTH_SHORT).show();
+
                 SmsManager sms = SmsManager.getDefault();
                 sms.sendTextMessage(telefono.getText().toString(), null, "Estoy en peligro en " + direccion,null, null);
 
@@ -223,7 +294,7 @@ public class mensajes extends AppCompatActivity implements LocationListener{
         String longitud="";
 
 
-        if ( ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
+        if ( ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED ) {
 
             ubicacion.requestLocationUpdates(provider, 400, 1, this);
             Location posActual=ubicacion.getLastKnownLocation(proveedor);
@@ -262,7 +333,7 @@ public class mensajes extends AppCompatActivity implements LocationListener{
         ubicacion= (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria=new Criteria();
         String proveedor=ubicacion.getBestProvider(criteria,true);
-        if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
+        if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) == PackageManager.PERMISSION_GRANTED ) {
 
 
         Location posActual=ubicacion.getLastKnownLocation(proveedor);
@@ -280,16 +351,17 @@ public class mensajes extends AppCompatActivity implements LocationListener{
 
 
         new ReadLocationJSONFeedTask().execute(
-                "http://maps.googleapis.com/maps/api/geocode/json?latlng=" +
+                "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
                         latitud+","+
-                        longitud+"&sensor=false");
+                        longitud);
     }
     public void btnFisico() {
+
 
         ubicacion= (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria=new Criteria();
         String proveedor=ubicacion.getBestProvider(criteria,true);
-        if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
+        if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) == PackageManager.PERMISSION_GRANTED ) {
 
 
             Location posActual = ubicacion.getLastKnownLocation(proveedor);
@@ -297,10 +369,12 @@ public class mensajes extends AppCompatActivity implements LocationListener{
             String longitud = "" + posActual.getLongitude();
 
 
+
+
             new ReadLocationJSONFeedTask().execute(
-                    "http://maps.googleapis.com/maps/api/geocode/json?latlng=" +
+                    "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
                             latitud + "," +
-                            longitud + "&sensor=false");
+                            longitud);
         }
     }
 
