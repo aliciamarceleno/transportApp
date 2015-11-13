@@ -82,14 +82,14 @@ public class mensajes extends AppCompatActivity implements LocationListener{
 
     protected void onResume() {
         super.onResume();
-        if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
+        if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) == PackageManager.PERMISSION_GRANTED ) {
             ubicacion.requestLocationUpdates(provider, 400, 1, this);
         }
 
     }
     protected void onPause() {
         super.onPause();
-        if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
+        if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) == PackageManager.PERMISSION_GRANTED ) {
 
             ubicacion.removeUpdates(this);
         }
@@ -118,11 +118,11 @@ public class mensajes extends AppCompatActivity implements LocationListener{
 
 
     public void mensajecontacto(View view){
-        Toast contacto = Toast.makeText(this,"Se enviará tu ubicación cada 5 minutos", Toast.LENGTH_LONG);
-        contacto.show();
+        //Toast contacto = Toast.makeText(this,"Se enviará tu ubicación cada 5 minutos", Toast.LENGTH_LONG);
+        //contacto.show();
         btnFisico();
-        Intent mnscontacto = new Intent(this, MainActivity.class);
-        startActivity(mnscontacto);
+        //Intent mnscontacto = new Intent(this, MainActivity.class);
+        //startActivity(mnscontacto);
     }
 
     public void volvercontacto(View view){
@@ -132,20 +132,7 @@ public class mensajes extends AppCompatActivity implements LocationListener{
 
 
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
     private class ReadLocationJSONFeedTask extends AsyncTask<String, Void, String> {
         protected String doInBackground(String... urls) {
             return readJSONFeed(urls[0]);
@@ -159,6 +146,7 @@ public class mensajes extends AppCompatActivity implements LocationListener{
                 direccion=remove1(direccion);
 
                 Toast.makeText(getBaseContext(),"Direccion Actual: "+direccion  ,Toast.LENGTH_SHORT).show();
+
                 SmsManager sms = SmsManager.getDefault();
                 sms.sendTextMessage(telefono.getText().toString(), null, "Estoy en peligro en " + direccion,null, null);
 
@@ -223,7 +211,7 @@ public class mensajes extends AppCompatActivity implements LocationListener{
         String longitud="";
 
 
-        if ( ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
+        if ( ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED ) {
 
             ubicacion.requestLocationUpdates(provider, 400, 1, this);
             Location posActual=ubicacion.getLastKnownLocation(proveedor);
@@ -262,7 +250,7 @@ public class mensajes extends AppCompatActivity implements LocationListener{
         ubicacion= (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria=new Criteria();
         String proveedor=ubicacion.getBestProvider(criteria,true);
-        if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
+        if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) == PackageManager.PERMISSION_GRANTED ) {
 
 
         Location posActual=ubicacion.getLastKnownLocation(proveedor);
@@ -280,16 +268,17 @@ public class mensajes extends AppCompatActivity implements LocationListener{
 
 
         new ReadLocationJSONFeedTask().execute(
-                "http://maps.googleapis.com/maps/api/geocode/json?latlng=" +
+                "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
                         latitud+","+
-                        longitud+"&sensor=false");
+                        longitud);
     }
     public void btnFisico() {
+
 
         ubicacion= (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria=new Criteria();
         String proveedor=ubicacion.getBestProvider(criteria,true);
-        if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
+        if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) == PackageManager.PERMISSION_GRANTED ) {
 
 
             Location posActual = ubicacion.getLastKnownLocation(proveedor);
@@ -297,10 +286,12 @@ public class mensajes extends AppCompatActivity implements LocationListener{
             String longitud = "" + posActual.getLongitude();
 
 
+
+
             new ReadLocationJSONFeedTask().execute(
-                    "http://maps.googleapis.com/maps/api/geocode/json?latlng=" +
+                    "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
                             latitud + "," +
-                            longitud + "&sensor=false");
+                            longitud);
         }
     }
 
