@@ -201,11 +201,11 @@ public class mensajes extends AppCompatActivity implements LocationListener{
 
 
     public void mensajecontacto(View view){
-        //Toast contacto = Toast.makeText(this,"Se enviará tu ubicación cada 5 minutos", Toast.LENGTH_LONG);
-        //contacto.show();
+        Toast contacto = Toast.makeText(this,"Se enviará tu ubicación cada 5 minutos", Toast.LENGTH_LONG);
+        contacto.show();
         btnFisico();
-        //Intent mnscontacto = new Intent(this, MainActivity.class);
-        //startActivity(mnscontacto);
+        Intent mnscontacto = new Intent(this, MainActivity.class);
+        startActivity(mnscontacto);
     }
 
     public void volvercontacto(View view){
