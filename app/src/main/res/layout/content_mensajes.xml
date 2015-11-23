@@ -8,7 +8,10 @@
 
     <TextView android:text="Ingresar Número de Contacto" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/vv" />
+        android:id="@+id/vv"
+        android:layout_alignTop="@+id/button4"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -16,32 +19,43 @@
         android:inputType="phone"
         android:ems="10"
         android:id="@+id/editText4"
-        android:layout_below="@+id/vv"
+        android:onClick="getContacto"
+        android:layout_above="@+id/button7"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:onClick="getContacto" />
+        android:layout_marginBottom="102dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Enviar Mensaje"
         android:id="@+id/button7"
-        android:layout_marginTop="56dp"
-        android:layout_below="@+id/editText4"
+        android:onClick="mensajecontacto"
+        android:layout_alignTop="@+id/button8"
         android:layout_toRightOf="@+id/vv"
-        android:layout_toEndOf="@+id/vv"
-        android:onClick="mensajecontacto"/>
+        android:layout_toEndOf="@+id/vv" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Volver"
         android:id="@+id/button8"
-        android:layout_alignTop="@+id/button7"
-        android:layout_alignRight="@+id/vv"
-        android:layout_alignEnd="@+id/vv"
-        android:layout_marginRight="44dp"
-        android:layout_marginEnd="44dp"
-        android:onClick="volvercontacto"/>
+        android:onClick="volvercontacto"
+        android:layout_marginBottom="129dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="46dp"
+        android:layout_marginStart="46dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button4"
+        android:drawableRight="@drawable/profile"
+        android:onClick="getContacto"
+        android:layout_alignBottom="@+id/editText4"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

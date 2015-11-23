@@ -133,7 +133,7 @@ public class mensajes extends AppCompatActivity implements LocationListener{
                     }
                     phones.close();
                 }
-                Toast.makeText(this, "You are selected Contact name "+name, Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Se selecciono el contacto "+name, Toast.LENGTH_LONG).show();
                 if(telefono.getText().length()!=0)
                 {
                     telefono.setText(telefono.getText().toString()+","+phoneNumber);
@@ -231,7 +231,7 @@ public class mensajes extends AppCompatActivity implements LocationListener{
                 Toast.makeText(getBaseContext(),"Direccion Actual: "+direccion  ,Toast.LENGTH_SHORT).show();
 
                 SmsManager sms = SmsManager.getDefault();
-                sms.sendTextMessage(telefono.getText().toString(), null, "Estoy en peligro en " + direccion,null, null);
+                sms.sendTextMessage(telefono.getText().toString(), null, "Estoy en  " + direccion,null, null);
 
             } catch (Exception e) {
                 Log.d("Error de ubicacion", e.getLocalizedMessage());
