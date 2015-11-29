@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/uno"
         android:layout_marginTop="43dp"
-        android:layout_below="@+id/radioButton4"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -31,36 +30,9 @@
         android:id="@+id/button5"
         android:layout_gravity="center_horizontal|bottom"
         android:onClick="consultarunidad1"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
-
-    <RadioGroup
-        android:id="@+id/radioGroup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Camion"
-            android:id="@+id/radioButton3"
-            android:layout_below="@+id/textView4"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_gravity="right" />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Taxi"
-            android:id="@+id/radioButton4"
-            android:checked="false"
-            android:layout_below="@+id/radioButton3"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_gravity="right" />
-
-    </RadioGroup>
+        android:layout_below="@+id/spinner2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp" />
 
     <Button
         android:layout_width="wrap_content"
@@ -82,5 +54,25 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <WebView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/webView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/button6"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/button5" />
+
+    <Spinner
+        android:layout_width="165dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner2"
+        android:layout_gravity="right"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/button5"
+        android:layout_toEndOf="@+id/button5" />
 
 </RelativeLayout>

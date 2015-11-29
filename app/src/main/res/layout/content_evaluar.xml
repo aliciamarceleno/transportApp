@@ -27,8 +27,7 @@
         android:ems="10"
         android:id="@+id/editText"
         android:layout_below="@+id/textView2"
-        android:layout_alignRight="@+id/radioButton"
-        android:layout_alignEnd="@+id/radioButton" />
+        />
 
     <RatingBar
         android:layout_width="wrap_content"
@@ -88,20 +87,6 @@
         android:layout_toEndOf="@+id/button">
 
 
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Camion"
-            android:id="@+id/radioButton" />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Taxi"
-            android:id="@+id/radioButton2"
-            android:checked="false" />
-
     </RadioGroup>
 
     <TextView
@@ -112,5 +97,13 @@
         android:layout_above="@+id/ratingBar"
         android:layout_alignRight="@+id/textView2"
         android:layout_alignEnd="@+id/textView2" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner"
+        android:layout_below="@+id/textView"
+        android:layout_toRightOf="@+id/textView2"
+        android:layout_toEndOf="@+id/textView2" />
 
 </RelativeLayout>
