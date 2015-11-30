@@ -67,6 +67,12 @@ public class evaluar extends AppCompatActivity {
 
 
     }
+
+    public void volver(View view){
+        Intent volver = new Intent(this, MainActivity.class);
+        startActivity(volver);
+    }
+
     public String readJSONFeed(String URL) {
         StringBuilder stringBuilder = new StringBuilder();
         HttpClient httpClient = new DefaultHttpClient();

@@ -28,17 +28,23 @@
         <activity
             android:name=".consultar"
             android:label="@string/title_activity_consultar"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
+
         </activity>
         <activity
             android:name=".evaluar"
             android:label="@string/title_activity_evaluar"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
+
         </activity>
         <activity
             android:name=".mensajes"
             android:label="@string/title_activity_mensajes"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
+
         </activity>
     </application>
 
