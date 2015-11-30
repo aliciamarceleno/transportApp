@@ -49,14 +49,14 @@ public class consultar extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
      public void consultarunidad1(View view){
-         Spinner tipo=(Spinner)findViewById(R.id.spinner);
+         Spinner tipo=(Spinner)findViewById(R.id.spinner2);
          String tipo1 = tipo.getSelectedItem().toString();
 
          EditText numero= (EditText)findViewById(R.id.editText3);
          String num1= numero.getText().toString();
 
          WebView consultarunidad= (WebView)findViewById(R.id.webView);
-         consultarunidad.loadUrl("http://transapp.netne.net/consulta.php?tipo="+tipo+"&numero="+numero+"");
+         consultarunidad.loadUrl("http://transapp.netne.net/consulta.php?tipo="+tipo1+"&numero="+num1+"");
      }
 
 
